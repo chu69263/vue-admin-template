@@ -25,7 +25,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Logo from './Logo'
+import Logo from '../../../../app/components/Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/framework/styles/variables.scss'
 

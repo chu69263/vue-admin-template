@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { constantRoutes } from './routes'
-
 Vue.use(Router)
+
+// 文档参照 https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/router-and-nav.html
 
 /* Layout */
 import Layout from '@/framework/layout'

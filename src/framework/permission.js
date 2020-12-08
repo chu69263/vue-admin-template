@@ -1,71 +1,61 @@
 import router from './router'
-import { permissionRoutes, lastRoutes } from './router/routes'
+import {permissionRoutes, lastRoutes} from './router/routes'
 import store from './store'
-import { Message } from 'element-ui'
+import {Message} from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getPageTitle } from '@/framework/utils/common'
+import {getPageTitle} from '@/framework/utils/common'
+import {superRole} from "@/settings";
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({showSpinner: false}) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
-  // start progress bar
   NProgress.start()
-
-  // set page title
   document.title = getPageTitle(to.meta.title)
-
-  // determine whether the user has logged in
-  // const hasToken = getToken()
-
+  // 判断是否已经登录
   if (store.getters.isLogin) {
     if (to.path === '/login') {
-      // if is logged in, redirect to the home page
-      next({ path: '/' })
+      // 如果已经登录并且在登录页面，就跳转到主页面
+      next({path: '/'})
       NProgress.done()
     } else {
-      // determine whether the user has obtained his permission roles through getInfo
+      // 判断是否已经加载了登录用户数据
       const accountLoaded = store.getters.isAccountLoaded
       if (accountLoaded) {
         next()
       } else {
         try {
-          // get user info
-          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { accountInfo, accountMenu } = await store.dispatch('user/getAccount')
-
-          // generate accessible routes map based on roles
+          // 获取登录用户数据
+          const {accountInfo, accountMenu} = await store.dispatch('user/getAccount')
+          // 生成当前用户可访问的页面
           let accessRoutes = await store.dispatch('permission/generateRoutes', accountMenu)
-
-          // 判断超级管理员权限
-          if (accountInfo.role_id && accountInfo.role_id.split(',').includes('1')) {
+          // 判断超级管理员权限（默认role = 1）
+          if (accountInfo.role_id && accountInfo.role_id.split(',').includes(superRole || '1')) {
+            // 加入超级管理员权限配置页面
             accessRoutes = accessRoutes.concat(permissionRoutes)
           }
+          // 一些通配符路由必须加载最后
           accessRoutes = accessRoutes.concat(lastRoutes)
+          // 设置页面路由数据
           store.commit('permission/SET_ROUTES', accessRoutes)
-          // dynamically add accessible routes
           router.addRoutes(accessRoutes)
-
-          // hack method to ensure that addRoutes is complete
-          // set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true })
+          //跳转页面
+          next({...to, replace: true})
         } catch (error) {
-          // remove token and go to login page to re-login
           Message.error(error || 'Has Error')
           NProgress.done()
         }
       }
     }
   } else {
-    /* has no token*/
-
+    // 未登录时候
+    // 白名单通过（如登录页面不需要权限）
     if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
       next()
     } else {
-      // other pages that do not have permission to access are redirected to the login page.
+      // 跳转到登录页面
       next(`/login?redirect=${to.path}`)
       NProgress.done()
     }

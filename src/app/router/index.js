@@ -17,6 +17,8 @@
  */
 import Layout from '@/framework/layout'
 
+// 文档参照 https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/router-and-nav.html
+
 // 公开的路由
 export const constantRoutes = [{
     path: '/demo',

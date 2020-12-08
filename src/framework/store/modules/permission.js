@@ -2,9 +2,10 @@ import { constantRoutes } from '@/framework/router/routes'
 import { asyncRoutes } from '@/app/router'
 
 /**
- * Use meta.role to determine if the current user has permission
- * @param roles
+ * 判断有没有权限
+ * @param actionMenu
  * @param route
+ * @returns {boolean|*}
  */
 function hasPermission(actionMenu, route) {
   if (route.name) {
@@ -15,9 +16,10 @@ function hasPermission(actionMenu, route) {
 }
 
 /**
- * Filter asynchronous routing tables by recursion
- * @param routes asyncRoutes
- * @param roles
+ * 过滤有权限的路由
+ * @param routes
+ * @param accountMenu
+ * @returns {[]}
  */
 export function filterAsyncRoutes(routes, accountMenu) {
   const res = []

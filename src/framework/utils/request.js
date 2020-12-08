@@ -3,16 +3,16 @@ import { Message } from 'element-ui'
 import Vue from 'vue'
 import store from '../store'
 
+//文档参照 https://github.com/axios/axios
+
 const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
 
 // request interceptor
 request.interceptors.request.use(
   config => {
-    // do something before request is sent
     config.headers['tp_timestamp'] = new Date().getTime()
     config.headers['tp_source'] = '1'
     config.headers['tp_uuid'] = 'login'
@@ -24,8 +24,6 @@ request.interceptors.request.use(
     return config
   },
   error => {
-    // do something with request error
-    console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -55,7 +53,6 @@ request.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
     Message({
       message: error.message,
       type: 'error',
@@ -66,5 +63,6 @@ request.interceptors.response.use(
 )
 
 Vue.prototype.$http = request
+Vue.http = request
 
 export default request

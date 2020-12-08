@@ -4,8 +4,13 @@
 
 import defaultSettings from '@/settings'
 
-const title = defaultSettings.title || '默认标题'
+const title = defaultSettings.title || '小破孩'
 
+/**
+ * 生成页面标题
+ * @param pageTitle
+ * @returns {string}
+ */
 export function getPageTitle(pageTitle) {
   if (pageTitle) {
     return `${pageTitle} - ${title}`
@@ -14,6 +19,7 @@ export function getPageTitle(pageTitle) {
 }
 
 /**
+ * 是否是链接
  * @param {string} path
  * @returns {Boolean}
  */
