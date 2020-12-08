@@ -1,3 +1,6 @@
+# 第一次安装项目
+> npm install 
+
 # 运行项目
 
 配置`.env.development`的域名和接口
