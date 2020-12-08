@@ -92,7 +92,7 @@ store模块：`framwork/store/modules`
 `framwork/utils/auth.js`
 
 ### 如何修改统一http请求逻辑？
-> 参照文档 [https://github.com/axios/axios](文档参照 https://github.com/axios/axios)
+> 参照文档 [https://github.com/axios/axios](https://github.com/axios/axios)
 
 `framework/utils/request.js`
 
