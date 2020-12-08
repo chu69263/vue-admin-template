@@ -1,13 +1,15 @@
-#运行项目
+# 运行项目
+
 配置`.env.development`的域名和接口
 > npm run dev
 
-#发布项目
+# 发布项目
+
 配置`.env.production`或者`.env.staging`的域名和接口
 > 测试环境：npm run build:stage
 >
 > 正式环境：npm run build:prod
-#项目结构
+# 项目结构
 ```
 project 
  - app              #业务代码
